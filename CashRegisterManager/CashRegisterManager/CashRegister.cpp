@@ -1,9 +1,8 @@
 ﻿#include "CashRegister.h"
 
-CashRegister::CashRegister(int initial_balance) : balance(initial_balance) {}
+CashRegister::CashRegister(double initial_balance) : balance(initial_balance) {}
 
-void CashRegister::withdraw(int employee_id, int amount) {
-    std::unique_lock<std::mutex> lock(mtx);
+void CashRegister::withdraw(int employee_id, double amount) {
     std::cout << "Employee " << employee_id << " wants to withdraw " << amount << "\n";
 
     if (amount > balance) {
@@ -16,8 +15,7 @@ void CashRegister::withdraw(int employee_id, int amount) {
     std::cout << "Employee " << employee_id << " withdrew " << amount << " - New balance: " << balance << "\n";
 }
 
-void CashRegister::deposit(int employee_id, int amount) {
-    std::unique_lock<std::mutex> lock(mtx);
+void CashRegister::deposit(int employee_id, double amount) {
     balance += amount;
     std::cout << "Employee " << employee_id << " deposited " << amount << " - New balance: " << balance << "\n";
     while (!waitQueue.empty()) {
@@ -34,7 +32,7 @@ void CashRegister::deposit(int employee_id, int amount) {
     }
 }
 
-int CashRegister::getBalance() {
+double CashRegister::getBalance() {
 	return balance;
 }
 
